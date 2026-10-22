@@ -39,16 +39,6 @@ core/app/crmweeek/Weeek.php
 php composer.phar dump-autoload
 ```
 
-## Быстрый старт
-
-```php
-require_once MODX_BASE_PATH . 'vendor/autoload.php';
-
-use Crmweeek\Weeek;
-
-$weeek = new Weeek('your-bearer-token');
-```
-
 ## Способ запуска в сниппите
 ```php
 
@@ -84,86 +74,6 @@ print_r($weeek->post('crm',[
         'phones' => ['+79001234567']]
 ]));
 ```
-
-## Методы
-
-### get(string $method, array $params = []): ?string
-
-GET-запрос к API. Возвращает строку JSON или `null` при ошибке.
-
-| Ключ `$params` | Тип | Описание |
-|----------------|-----|----------|
-| `object` | `string` | Путь объекта, например `crm/organizations` |
-| `id` | `string` | ID ресурса (UUID) |
-| `query` | `string` | Поисковая строка |
-
-Примеры:
-
-```php
-// Список организаций
-$weeek->get('crm/organizations');
-
-// Организация по ID
-$weeek->get('crm/organizations', ['id' => '00000000-0000-0000-0000-000000000000']);
-
-// Поиск
-$weeek->get('crm/organizations', ['query' => 'ООО Ромашка']);
-```
-
-### post(string $method, array $params = []): ?string
-
-POST-запрос. Тело отправляется как JSON (`Content-Type: application/json`).
-
-| Ключ `$params` | Тип | Описание |
-|----------------|-----|----------|
-| `object` | `string` | Путь объекта, например `crm/organizations` |
-| `data` | `array` | Данные для тела запроса |
-
-Пример — создание организации:
-
-```php
-$result = $weeek->post('crm/organizations', [
-    'data' => [
-        'name'         => 'ООО Ромашка',
-        'addresses'    => ['г. Москва, ул. Ленина, 1'],
-        'emails'       => ['test@example.com'],
-        'phones'       => ['+79001234567'],
-        'responsibles' => ['00000000-0000-0000-0000-000000000000'],
-    ],
-]);
-
-$data = json_decode($result, true);
-```
-
-## Логирование
-
-Используется [Monolog](https://github.com/Seldaek/monolog).
-
-- Канал: `weeek`
-- Уровень: `DEBUG`
-- Файл: `logs/weeek.log`
-
-При ошибке API в лог пишутся: тип запроса, метод, переданные данные и исключение.
-
-## Обработка ошибок
-
-При ответах 4xx/5xx и сетевых сбоях Guzzle выбрасывает `RequestException`.  
-Ошибка логируется, метод возвращает `null`:
-
-```php
-$result = $weeek->get('crm/organizations');
-
-if ($result === null) {
-    $modx->log(modX::LOG_LEVEL_ERROR, 'Weeek API недоступен');
-}
-```
-
-## Безопасность
-
-- Не хардкодьте токен — храните его в `.env` (через `vlucas/phpdotenv`) и читайте через `getenv('WEEEK_TOKEN')`.
-- Держите папку `logs/` вне веб-рута (`www/`).
-- Убедитесь, что у владельца PHP-процесса есть права на запись в `logs/`.
-
 ## Ссылки
 
 - [Weeek API](https://weeek.net)
