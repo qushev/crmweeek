@@ -3,12 +3,6 @@
 PHP-клиент для работы с API [Weeek](https://weeek.net) на GuzzleHttp + Monolog.  
 Разработан для использования в MODX Revolution.
 
-## Требования
-
-- PHP >= 8.1
-- Composer
-- MODX Revolution (используется константа `MODX_BASE_PATH`)
-
 ## Установка
 
 ```bash
@@ -74,8 +68,3 @@ print_r($weeek->post('crm',[
         'phones' => ['+79001234567']]
 ]));
 ```
-## Ссылки
-
-- [Weeek API](https://weeek.net)
-- [GuzzleHttp](https://docs.guzzlephp.org)
-- [Monolog](https://github.com/Seldaek/monolog)
